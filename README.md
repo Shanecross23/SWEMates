@@ -1,3 +1,8 @@
+DineSmart by SWEmates
+Project Description:
+For busy undergraduate students who want a fast and economic way to acquire food, DineSmart is a website that allows users to easily discover which delivery service is the cheapest and quickest at that moment. Unlike the user constantly switching between apps and services to compare data, our product provides a hassle-free experience with immediate results to get food delivered at the convenience of the customer.
+
+
 How to setup React project-
 
 Go to https://nodejs.org/en and download node.js.
