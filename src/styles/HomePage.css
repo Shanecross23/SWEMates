@@ -1,0 +1,13 @@
+main {
+    padding: 20px;
+    text-align: center;
+    min-height: 80vh; /* To ensure footer stays at the bottom */
+  }
+  
+  h2 {
+    color: #f8b400;
+  }
+  
+  p {
+    font-size: 18px;
+  }
