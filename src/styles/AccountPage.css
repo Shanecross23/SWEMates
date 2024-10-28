@@ -1,0 +1,54 @@
+/* src/styles/AccountPage.css */
+
+.account-page {
+    padding: 20px;
+    min-height: 80vh; /* Ensures footer stays at the bottom */
+    background-color: #fff; /* White background */
+  }
+  
+  .account-page h2 {
+    color: #f8b400; /* Gold */
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .preferences-form {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #fff; /* White */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .preferences-form label {
+    display: block;
+    margin-bottom: 20px;
+    color: #333; /* Dark grey */
+    font-weight: bold;
+  }
+  
+  .preferences-form input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .preferences-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #f8b400; /* Gold */
+    color: #fff; /* White */
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .preferences-form button:hover {
+    background-color: #d99600; /* Slightly darker gold */
+  }
