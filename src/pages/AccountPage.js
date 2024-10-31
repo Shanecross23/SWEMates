@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import '../styles/AccountPage.css';
 
 function AccountPage() {
@@ -13,19 +14,28 @@ function AccountPage() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // For now, just log the data to the console
-    console.log('Form Data:', formData);
-    // Backend handling can be added later
-    alert('Preferences submitted successfully!');
-    // Optionally, reset the form
-    setFormData({
-      name: '',
-      address: '',
-      cuisine: '',
-    });
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log('Form Data:', formData);
+
+        try {
+            // Send a POST request to backend
+            const response = await axios.post('http://localhost:5000/api/users', formData);
+            console.log('Response from server:', response.data);
+            alert('Preferences submitted successfully!');
+
+            //reset form
+            setFormData({
+                name: '',
+                address: '',
+                cuisine: '',
+            });
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('There was an error submitting your preferences.');
+        }
+    };
+
 
   return (
     <main className="account-page">
