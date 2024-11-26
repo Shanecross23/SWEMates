@@ -14,8 +14,3 @@ If you get react-scripts command not found then follow these steps:
 1. Delete package-lock.json locally in your cloned repository. 
 2. Reinstall dependencies using "npm install". 
 3. Run "npm start" and it should work.
-
-
-How to connect to MongoDB 
-
-https://docs.google.com/document/d/1USzeCu70OS4tL3HTh_8CwgJWNlvm7M2epCxfQRTHJBE/edit?usp=sharing
