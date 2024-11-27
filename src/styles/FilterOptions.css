@@ -1,0 +1,72 @@
+/* src/styles/FilterOptions.css */
+
+:root {
+  --filter-background: #fff;
+  --filter-border: #ccc;
+  --filter-hover-bg: #f8b400; /* Yellow on hover and active */
+  --filter-hover-text: #fff;
+  --label-color: #333;
+  --button-text-color: #333;
+  --button-font-weight: 500; /* Slightly thicker text */
+  --active-scale: 1.05; /* Scale factor for active button */
+  --transition-duration: 0.3s; /* Duration for transitions */
+}
+
+.filter-options-container {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fafafa;
+  border-bottom: 1px solid #ddd;
+}
+
+.filters-label {
+  font-size: 18px;
+  font-weight: 500; /* Slightly thicker */
+  color: var(--label-color);
+  margin-right: 20px;
+  white-space: nowrap;
+}
+
+.filter-options {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+  flex-wrap: wrap; /* Allows buttons to wrap to the next line if necessary */
+}
+
+.filter-button {
+  background-color: var(--filter-background);
+  border: 1px solid var(--filter-border);
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: var(--button-font-weight); /* Slightly thicker text */
+  color: var(--button-text-color);
+  transition: 
+    background-color var(--transition-duration) ease, 
+    color var(--transition-duration) ease, 
+    transform var(--transition-duration) ease; /* Include transform in transition */
+  transform: scale(1); /* Default scale */
+  box-shadow: none; /* Remove any existing box-shadow */
+}
+
+.filter-button:hover {
+  background-color: var(--filter-hover-bg); /* Yellow on hover */
+  color: var(--filter-hover-text);
+}
+
+.filter-button.active {
+  background-color: var(--filter-hover-bg); /* Yellow when active */
+  color: var(--filter-hover-text);
+  transform: scale(var(--active-scale)); /* Scale up when active */
+  /* Removed box-shadow to eliminate the outline effect */
+}
+
+/* Optional: Enhance focus state for accessibility */
+.filter-button:focus {
+  outline: none; /* Remove default outline */
+  /* Add a subtle focus indicator if desired */
+  /* You can comment this out if you prefer no focus indicator */
+  /* box-shadow: 0 0 0 2px #f8b400; */ 
+}
