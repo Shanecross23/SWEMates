@@ -1,13 +1,20 @@
-main {
-    padding: 20px;
-    text-align: center;
-    min-height: 80vh; /* To ensure footer stays at the bottom */
-  }
-  
-  h2 {
-    color: #f8b400;
-  }
-  
-  p {
-    font-size: 18px;
-  }
+/* src/styles/HomePage.css */
+
+.main {
+  padding: 20px;
+}
+
+.loading,
+.error {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.error {
+  color: red;
+}
+
+.loading {
+  color: #555;
+}

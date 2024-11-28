@@ -1,0 +1,72 @@
+/* src/styles/FoodCategories.css */
+
+.food-categories-container {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  height: 60px; /* Fixed height to accommodate scaled buttons */
+  box-sizing: border-box; /* Ensure padding is included in height */
+}
+
+.categories-label {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-right: 20px;
+  white-space: nowrap;
+}
+
+.food-categories {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  height: 100%; /* Fill the container's height */
+  align-items: center; /* Vertically center the buttons */
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  background-color: #f0f0f0;
+  border: none; /* Remove default button border */
+  border-radius: 20px;
+  padding: 8px 15px;
+  cursor: pointer;
+  transition: 
+    background-color 0.3s ease, 
+    transform 0.3s ease;
+  transform: scale(1); /* Default scale */
+  font: inherit; /* Inherit font properties from parent */
+  color: #333;
+  height: 36px; /* Fixed height to ensure consistency */
+  box-sizing: border-box; /* Include padding in height */
+}
+
+.category-item:hover {
+  background-color: #e0e0e0;
+}
+
+.category-item.active {
+  background-color: #f8b400;
+  color: #fff;
+  transform: scale(1.05); /* Slightly enlarge when active */
+}
+
+.category-name {
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.category-icon {
+  font-size: 18px;
+  color: inherit;
+}
+
+/* Focus State for Accessibility */
+.category-item:focus {
+  outline: none; /* Remove default outline */
+  border: 1px solid #f8b400; /* Subtle focus indicator */
+}
