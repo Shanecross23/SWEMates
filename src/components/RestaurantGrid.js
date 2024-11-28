@@ -1,3 +1,4 @@
+// src/components/RestaurantGrid.js
 
 import React from 'react';
 import '../styles/RestaurantGrid.css';
@@ -12,11 +13,18 @@ function RestaurantGrid({ restaurants }) {
             alt={restaurant.name}
             className="restaurant-image"
           />
-          <h3 className="restaurant-name">{restaurant.name}</h3>
-          <p className="restaurant-info">
-            {restaurant.cuisine} • {restaurant.rating} ⭐
-          </p>
-          <p className="restaurant-distance">{restaurant.distance} miles away</p>
+          <div className="restaurant-info">
+            <h3>{restaurant.name}</h3>
+            <p>Cuisine: {restaurant.cuisine}</p>
+            <p>Rating: {restaurant.rating}</p>
+            <p>Distance: {restaurant.distance} km</p>
+            <p>
+              Price:{' '}
+              {restaurant.priceLevel === 0
+                ? 'N/A'
+                : '$'.repeat(restaurant.priceLevel)}
+            </p>
+          </div>
         </div>
       ))}
     </div>
