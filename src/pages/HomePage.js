@@ -34,6 +34,7 @@ function HomePage() {
 
         const geocoder = new window.google.maps.Geocoder();
 
+        //Vishal's comment
         // Geocode the address to get latitude and longitude
         geocoder.geocode({ address: address }, (results, status) => {
           if (status === 'OK' && results[0]) {
