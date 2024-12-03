@@ -57,3 +57,13 @@
 .landing-page .SignIn{
   margin-top: 25px;
 }
+
+.sign-in-link {
+  color:#28a745; /* Inherits text color from parent */
+  text-decoration: none; /* Removes underline */
+  cursor: pointer; /* Makes it look like clickable text */
+}
+
+.sign-in-link:hover{
+  color: #218838;
+}
