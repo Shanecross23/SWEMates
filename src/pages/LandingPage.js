@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { StandaloneSearchBox, useLoadScript } from '@react-google-maps/api';
 import '../styles/LandingPage.css';
 
+
 const libraries = ['places'];
 
 function LandingPage() {
@@ -46,6 +47,7 @@ function LandingPage() {
   return (
     <div className="landing-page">
       <h1>Welcome to DineSmart</h1>
+      <h3 className="subheading">Enter Your Address</h3>
       <form onSubmit={handleSubmit}>
         <StandaloneSearchBox
           onLoad={onLoad}
@@ -53,13 +55,22 @@ function LandingPage() {
         >
           <input
             type="text"
-            placeholder="Enter your address"
+            placeholder="Address"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             required
           />
         </StandaloneSearchBox>
         <button type="submit">Get Started</button>
+        <h3>Sign In</h3>
+        <input class="SignIn"
+            type="text"
+            placeholder="Username"
+          />
+          <input
+            type="text"
+            placeholder="Password"
+          />
       </form>
     </div>
   );
