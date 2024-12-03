@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import '../styles/FilterOptions.css';
 
 function FilterOptions({ onFilterChange }) {
-  const filters = ['Rating', 'Distance', 'Price', 'Cuisine'];
+  const filters = ['Rating', 'Distance', 'Price'];
   const [activeFilter, setActiveFilter] = useState('');
 
   const handleClick = (filter) => {
