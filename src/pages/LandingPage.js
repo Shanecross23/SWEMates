@@ -1,7 +1,7 @@
 // src/pages/LandingPage.js
 
 import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { StandaloneSearchBox, useLoadScript } from '@react-google-maps/api';
 import '../styles/LandingPage.css';
 
@@ -62,15 +62,7 @@ function LandingPage() {
           />
         </StandaloneSearchBox>
         <button type="submit">Get Started</button>
-        <h3>Sign In</h3>
-        <input class="SignIn"
-            type="text"
-            placeholder="Username"
-          />
-          <input
-            type="text"
-            placeholder="Password"
-          />
+        <h4>Already have an account?{' '} <Link to="/login" className="sign-in-link">Sign In</Link></h4>
       </form>
     </div>
   );
