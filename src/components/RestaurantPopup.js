@@ -142,7 +142,7 @@ function RestaurantPopup({ isOpen, onRequestClose, restaurant }) {
             {details.website && (
               <p>
                 <FaGlobe />{' '}
-                <strong>Website:</strong>{' '}
+                <strong></strong>{' '}
                 <a
                   href={details.website}
                   target="_blank"
