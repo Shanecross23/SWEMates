@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const { MongoClient } = require('mongodb');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const axios = require('axios');
+
 require('dotenv').config();
 
 // sample user connection URI
@@ -18,6 +20,24 @@ app.use(bodyParser.json());
 
 const JWT_SECRET = process.env.JWT_SECRET || 'turkey';
 
+async function validateAddress(address) {
+    const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${API_KEY}`;
+
+    try {
+        const response = await axios.get(url);
+        const data = response.data;
+
+        if (data.status === 'OK' && data.results.length > 0) {
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error('Error validating address:', error);
+        return false;
+    }
+}
+
 // connect to MongoDB and start server
 async function run() {
     try {
@@ -31,6 +51,14 @@ async function run() {
         app.post('/api/users', async (req, res) => {
             try {
                 const { name, password, cuisine, address } = req.body;
+                const existingUser = await usersCollection.findOne({ name });
+                if (existingUser) {
+                    return res.status(400).json({ error: 'Username already exists' });
+                }
+                const isValidAddress = await validateAddress(address);
+                if (!isValidAddress) {
+                    return res.status(400).json({ error: 'Invalid address.' });
+                }
                 const saltRounds = 10;
                 const hashedPassword = await bcrypt.hash(password, saltRounds);
 
