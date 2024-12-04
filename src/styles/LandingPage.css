@@ -59,9 +59,9 @@
 }
 
 .sign-in-link {
-  color:#28a745; /* Inherits text color from parent */
-  text-decoration: none; /* Removes underline */
-  cursor: pointer; /* Makes it look like clickable text */
+  color:#28a745;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .sign-in-link:hover{

@@ -1,7 +1,7 @@
 // src/pages/LandingPage.js
 
 import React, { useState, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { StandaloneSearchBox, useLoadScript } from '@react-google-maps/api';
 import '../styles/LandingPage.css';
 
@@ -39,7 +39,11 @@ function LandingPage() {
     } else {
       alert('Please enter a valid address.');
     }
-  };
+    };
+    const handleSignIn = (e) => {
+        e.preventDefault();
+        navigate('/login');
+    };
 
   if (loadError) return <div>Error loading maps</div>;
   if (!isLoaded) return <div>Loading Maps...</div>;
@@ -62,8 +66,11 @@ function LandingPage() {
           />
         </StandaloneSearchBox>
         <button type="submit">Get Started</button>
-        <h4>Already have an account?{' '} <Link to="/login" className="sign-in-link">Sign In</Link></h4>
-      </form>
+        
+          </form>
+       <form onSubmit={handleSignIn}>
+       <button type="submit">Sign In</button>
+       </form >
     </div>
   );
 }

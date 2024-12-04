@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-// import '../styles/RegisterPage.css';  // TODO
+// import '../styles/AccountPage.css';  // TODO
 
-function RegisterPage() {
+function AccountPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [address, setAddress] = useState('');
@@ -29,7 +29,7 @@ function RegisterPage() {
 
     return (
         <div className="register-page">
-            <h2>Register for SWEMates</h2>
+            <h2>Hello</h2>
             <form onSubmit={handleRegister}>
                 <input
                     type="text"
@@ -58,4 +58,4 @@ function RegisterPage() {
     );
 }
 
-export default RegisterPage;
+export default AccountPage;
