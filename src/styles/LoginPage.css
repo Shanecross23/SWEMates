@@ -1,0 +1,71 @@
+/* LoginPage.css */
+.login-page {
+    background-color: #f9f9f9;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    background-color: white;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-field {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+    .input-field:focus {
+        border-color: #6c63ff;
+        outline: none;
+    }
+
+.login-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-btn:hover {
+    background-color: #218838;
+}
+
+.signup-prompt {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.signup-prompt a {
+    color: #28a745;
+    text-decoration: none;
+}
+
+        .signup-prompt a:hover {
+            text-decoration: underline;
+        }
