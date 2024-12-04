@@ -10,8 +10,6 @@ import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import RegisterPage from './pages/RegisterPage';
 // Remove or comment out authentication imports
-// import LoginPage from './pages/LoginPage';
-// import RegisterPage from './pages/RegisterPage';
 // import PrivateRoute from './components/PrivateRoute';
 
 function App() {

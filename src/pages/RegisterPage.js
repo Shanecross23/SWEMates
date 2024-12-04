@@ -1,61 +1,86 @@
-// src/pages/RegisterPage.js
-
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-// import '../styles/RegisterPage.css';  // TODO
+import '../styles/AccountPage.css';
 
-function RegisterPage() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [address, setAddress] = useState('');
-  const navigate = useNavigate();
+function AccountPage() {
+    const [formData, setFormData] = useState({
+        name: '',
+        password: '',
+        cuisine: '',
+    });
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post('http://localhost:5000/api/register', {
-        username,
-        password,
-        address,
-      });
-      alert('Registration successful! Please log in.');
-      navigate('/login');
-    } catch (error) {
-      console.error(error);
-      alert('Registration failed. Please try again.');
-    }
-  };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
 
-  return (
-    <div className="register-page">
-      <h2>Register for SWEMates</h2>
-      <form onSubmit={handleRegister}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          required
-        />
-        <button type="submit">Register</button>
-      </form>
-    </div>
-  );
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log('Form Data:', formData);
+
+        try {
+            // Send a POST request to backend
+            const response = await axios.post('http://localhost:5000/api/users', formData);
+            console.log('Response from server:', response.data);
+            alert('Preferences submitted successfully!');
+
+            //reset form
+            setFormData({
+                name: '',
+                address: '',
+                cuisine: '',
+            });
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('There was an error submitting your preferences.');
+        }
+    };
+
+
+    return (
+        <main className="account-page">
+            <h2>Register Your Account</h2>
+            <form className="preferences-form" onSubmit={handleSubmit}>
+                <label>
+                    Username:
+                    <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        placeholder="Enter your name"
+                    />
+                </label>
+
+                <label>
+                    Password:
+                    <input
+                        type="text"
+                        name="password"
+                        value={formData.address}
+                        onChange={handleChange}
+                        required
+                        placeholder="Enter your address"
+                    />
+                </label>
+
+                <label>
+                    Cuisine Preference:
+                    <input
+                        type="text"
+                        name="cuisine"
+                        value={formData.cuisine}
+                        onChange={handleChange}
+                        required
+                        placeholder="Enter your preferred cuisine"
+                    />
+                </label>
+
+                <button type="submit">Submit</button>
+            </form>
+        </main>
+    );
 }
 
-export default RegisterPage;
+export default AccountPage;
