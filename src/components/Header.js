@@ -14,7 +14,6 @@ function Header() {
         <ul className="nav-links">
           <li><Link to="/">Home</Link></li>
           {/* Removed Compare Prices link */}
-          <li><Link to="/account">Account</Link></li>
         </ul>
       </nav>
     </header>
