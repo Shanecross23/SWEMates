@@ -1,94 +1,99 @@
 // src/pages/HomePage.js
 
+// Import React and essential hooks
 import React, { useEffect, useState } from 'react';
+// Import components used in this page
 import FoodCategories from '../components/FoodCategories';
 import FilterOptions from '../components/FilterOptions';
 import RestaurantGrid from '../components/RestaurantGrid';
-import RestaurantPopup from '../components/RestaurantPopup'; // Import the new component
+import RestaurantPopup from '../components/RestaurantPopup'; // Component for restaurant detail modal
 import Footer from '../components/Footer';
+// Import CSS styles for this page
 import '../styles/HomePage.css';
+// Import Google Maps library hook for script loading
 import { useLoadScript } from '@react-google-maps/api';
 
+// Define libraries required for Google Maps API
 const libraries = ['places'];
 
 function HomePage() {
-  // Existing state variables
-  const [restaurants, setRestaurants] = useState([]);
-  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
-  const [activeFilter, setActiveFilter] = useState('');
-  const [activeCategoryKeyword, setActiveCategoryKeyword] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // State variables to manage restaurant data, filters, and loading/error states
+  const [restaurants, setRestaurants] = useState([]); // All fetched restaurants
+  const [filteredRestaurants, setFilteredRestaurants] = useState([]); // Restaurants after applying filters
+  const [activeFilter, setActiveFilter] = useState(''); // Current active filter (Rating, Distance, etc.)
+  const [activeCategoryKeyword, setActiveCategoryKeyword] = useState(null); // Selected food category keyword
+  const [loading, setLoading] = useState(true); // Loading state indicator
+  const [error, setError] = useState(null); // Error message state
 
-  // New state variables for modal
-  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // State variables for modal behavior
+  const [selectedRestaurant, setSelectedRestaurant] = useState(null); // Currently selected restaurant for modal
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal open/close state
 
-  // Load Google Maps script
+  // Load Google Maps script with API key and required libraries
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY, // Ensure this environment variable is set
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY, // API key must be set in environment variables
     libraries: libraries,
   });
 
   /**
-   * Effect to fetch restaurants when the script is loaded or the category changes
+   * Fetch restaurant data when Google Maps script is loaded or category changes.
    */
   useEffect(() => {
-    if (!isLoaded) return;
+    if (!isLoaded) return; // Wait until the script is loaded
 
     const fetchRestaurants = () => {
       setLoading(true);
-      setError(null);
+      setError(null); // Clear previous errors
 
       try {
-        const address = localStorage.getItem('userAddress'); // Ensure the address is stored correctly
+        const address = localStorage.getItem('userAddress'); // Retrieve user address from local storage
         if (!address) {
           throw new Error('No address found. Please enter your address.');
         }
 
         const geocoder = new window.google.maps.Geocoder();
 
-        // Geocode the address to get latitude and longitude
+        // Convert user address to geographic coordinates
         geocoder.geocode({ address: address }, (results, status) => {
           if (status === 'OK' && results[0]) {
             const location = results[0].geometry.location;
 
-            // Initialize the map (required for PlacesService)
+            // Create a dummy map object required by the PlacesService
             const map = new window.google.maps.Map(document.createElement('div'));
             const service = new window.google.maps.places.PlacesService(map);
 
-            // Prepare the Places API request
+            // Define a search request for nearby restaurants
             const request = {
               location: location,
-              radius: 5000, // 5 km radius
-              type: ['restaurant'],
-              keyword: activeCategoryKeyword, // Include keyword if a category is selected
+              radius: 5000, // Search within 5 km radius
+              type: ['restaurant'], // Limit results to restaurants
+              keyword: activeCategoryKeyword, // Filter by category keyword if selected
             };
 
-            // Perform nearby search
+            // Fetch restaurant data using Places API
             service.nearbySearch(request, (results, status) => {
               if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-                // Process the fetched places
+                // Map API response to restaurant objects
                 const fetchedRestaurants = results.map((place) => ({
                   id: place.place_id,
                   name: place.name,
                   image: place.photos
                     ? place.photos[0].getUrl({ maxWidth: 400 })
-                    : '/images/default-restaurant.jpg',
+                    : '/images/default-restaurant.jpg', // Default image if no photos are available
                   cuisine:
                     place.types && place.types.length > 0
                       ? place.types[0].replace('_', ' ').toUpperCase()
-                      : 'Unknown',
-                  rating: place.rating || 'N/A',
-                  distance: null, // Will calculate later
+                      : 'Unknown', // Extract and format cuisine type
+                  rating: place.rating || 'N/A', // Restaurant rating
+                  distance: null, // Distance will be calculated later
                   distanceText: '',
                   durationText: '',
-                  priceLevel: place.price_level || 0,
+                  priceLevel: place.price_level || 0, // Price level
                   geometry: place.geometry,
-                  location: place.geometry.location,
+                  location: place.geometry.location, // Lat/Lng location
                 }));
 
-                // Calculate distances using Distance Matrix Service
+                // Use Distance Matrix API to calculate distances
                 const origins = [location];
                 const destinations = fetchedRestaurants.map(
                   (restaurant) => restaurant.location
@@ -97,12 +102,13 @@ function HomePage() {
                 const distanceMatrixService =
                   new window.google.maps.DistanceMatrixService();
 
+                // Fetch distances for all restaurants
                 distanceMatrixService.getDistanceMatrix(
                   {
                     origins: origins,
                     destinations: destinations,
-                    travelMode: window.google.maps.TravelMode.DRIVING,
-                    unitSystem: window.google.maps.UnitSystem.METRIC,
+                    travelMode: window.google.maps.TravelMode.DRIVING, // Travel mode
+                    unitSystem: window.google.maps.UnitSystem.METRIC, // Metric units
                   },
                   (response, status) => {
                     if (status === 'OK') {
@@ -128,9 +134,10 @@ function HomePage() {
                         }
                       );
 
+                      // Update state with fetched and processed data
                       setRestaurants(restaurantsWithDistances);
                       setFilteredRestaurants(restaurantsWithDistances);
-                      setLoading(false);
+                      setLoading(false); // Data successfully loaded
                     } else {
                       throw new Error(
                         `Distance Matrix request failed: ${status}`
@@ -147,85 +154,66 @@ function HomePage() {
           }
         });
       } catch (err) {
-        console.error(err);
-        setError(err.message);
-        setLoading(false);
+        console.error(err); // Log error to console
+        setError(err.message); // Update error state
+        setLoading(false); // Stop loading indicator
       }
     };
 
     fetchRestaurants();
-  }, [isLoaded, activeCategoryKeyword]); // Dependency on activeCategoryKeyword
+  }, [isLoaded, activeCategoryKeyword]); // Dependencies to re-fetch data
 
-  /**
-   * Handles changes in the filter options (Rating, Distance, Price)
-   * @param {string|null} filter - The selected filter option
-   */
+  // Handlers for UI interactions (filter, category, and modal)
   const handleFilterChange = (filter) => {
-    setActiveFilter(filter);
-    applyFilters(filter);
+    setActiveFilter(filter); // Update active filter state
+    applyFilters(filter); // Apply the selected filter
   };
 
-  /**
-   * Handles category selection from FoodCategories component
-   * @param {string|null} keyword - The keyword associated with the selected category
-   */
   const handleCategorySelect = (keyword) => {
-    setActiveCategoryKeyword(keyword);
-    // Reset active filter when a new category is selected
-    setActiveFilter('');
+    setActiveCategoryKeyword(keyword); // Update category keyword
+    setActiveFilter(''); // Reset filter when category changes
   };
 
-  /**
-   * Handles restaurant card click to open modal with details
-   * @param {Object} restaurant - The selected restaurant object
-   */
   const handleRestaurantClick = (restaurant) => {
-    setSelectedRestaurant(restaurant);
-    setIsModalOpen(true);
+    setSelectedRestaurant(restaurant); // Set selected restaurant for modal
+    setIsModalOpen(true); // Open modal
   };
 
-  /**
-   * Closes the restaurant detail modal
-   */
   const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedRestaurant(null);
+    setIsModalOpen(false); // Close modal
+    setSelectedRestaurant(null); // Clear selected restaurant
   };
 
   /**
-   * Applies sorting filters to the list of restaurants
-   * @param {string|null} filter - The selected filter option
+   * Apply sorting filters to restaurant data based on user selection
    */
   const applyFilters = (filter) => {
-    let updatedRestaurants = [...restaurants];
-
-    // Since category filtering is handled via API, only apply sorting
+    let updatedRestaurants = [...restaurants]; // Clone restaurant array
 
     if (filter) {
       switch (filter) {
         case 'Rating':
-          updatedRestaurants.sort((a, b) => b.rating - a.rating);
+          updatedRestaurants.sort((a, b) => b.rating - a.rating); // Sort by rating (descending)
           break;
         case 'Distance':
-          // Handle null distances by placing them at the end
           updatedRestaurants.sort((a, b) => {
-            if (a.distance === null) return 1;
+            if (a.distance === null) return 1; // Place null values at the end
             if (b.distance === null) return -1;
-            return a.distance - b.distance;
+            return a.distance - b.distance; // Sort by distance (ascending)
           });
           break;
         case 'Price':
-          updatedRestaurants.sort((a, b) => a.priceLevel - b.priceLevel);
+          updatedRestaurants.sort((a, b) => a.priceLevel - b.priceLevel); // Sort by price level (ascending)
           break;
         default:
           break;
       }
     }
 
-    setFilteredRestaurants(updatedRestaurants);
+    setFilteredRestaurants(updatedRestaurants); // Update state with sorted data
   };
 
-  // Handle errors in loading the Google Maps script
+  // Render error message if Google Maps script fails to load
   if (loadError) {
     return <div className="error">Error loading maps. Please try again later.</div>;
   }
@@ -233,13 +221,13 @@ function HomePage() {
   return (
     <>
       <main className="home-page">
-        {/* Render FoodCategories component and pass the handler */}
+        {/* Render category selection component */}
         <FoodCategories onCategorySelect={handleCategorySelect} />
 
-        {/* Render FilterOptions component and pass the handler */}
+        {/* Render sorting filter options */}
         <FilterOptions onFilterChange={handleFilterChange} />
 
-        {/* Conditional Rendering based on loading and error states */}
+        {/* Conditional rendering for loading and error states */}
         {loading ? (
           <div className="loading">Loading restaurants...</div>
         ) : error ? (
@@ -247,15 +235,15 @@ function HomePage() {
         ) : (
           <RestaurantGrid
             restaurants={filteredRestaurants}
-            onRestaurantClick={handleRestaurantClick}
+            onRestaurantClick={handleRestaurantClick} // Pass handler for restaurant clicks
           />
         )}
       </main>
 
-      {/* Render Footer */}
+      {/* Render footer */}
       <Footer />
 
-      {/* Render RestaurantPopup modal */}
+      {/* Render modal for selected restaurant details */}
       {selectedRestaurant && (
         <RestaurantPopup
           isOpen={isModalOpen}
@@ -267,4 +255,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default HomePage; // Export component
