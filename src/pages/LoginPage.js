@@ -18,6 +18,7 @@ function LoginPage() {
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('userAddress', response.data.address);
             navigate('/home');
+            // check for incorerct sign in
         } catch (error) {
             console.error(error);
             alert('Login failed. Please check your credentials.');
@@ -29,25 +30,32 @@ function LoginPage() {
             <div className="login-container">
                 <h2 className="login-title">Welcome Back to DineSmart!</h2>
                 <form onSubmit={handleLogin} className="login-form">
+                    {/* box for username input */}
                     <input
                         type="text"
+                        // text inside of box
                         placeholder="Username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
                         className="input-field"
                     />
+                    {/* box for password input */}
                     <input
                         type="password"
+                        // tect inside of box
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                         className="input-field"
                     />
+                    {/* submit button for login */}
                     <button type="submit" className="login-btn">Login</button>
                 </form>
+                {/* link to register */}
                 <div className="signup-prompt">
+                    {/*prompt to register*/}
                     <p>Don't have an account? <a href="/register">Sign up</a></p>
                 </div>
             </div>
